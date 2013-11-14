@@ -1,0 +1,117 @@
+
+// **************** LED  
+// Actuator : listens to virtual value and turns ON or OFF (or sets 255 value) physically 
+// Initalially value set to 0, OFF
+// Functionality : 
+// 	Set value of LED
+
+  socket = io.connect('http://localhost:8080');
+
+<polymer-element name="x-led" style="background-color: {{color}}" attributes='color value' >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border-radius: 50%;
+				border: 3px solid rgb(205,0,0);
+				transition: background-color 0.3s ease-in, border-color 0.3s ease-in;
+				-webkit-transition: background-color 0.3s ease-in, border-color 0.3s ease-in; 
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('x-led', {
+
+			value: 0, 
+			id : 0, 
+			pin : 1,
+			color: 'red',
+		
+			// When element is created, listens to proper entry in database based on
+			// {id, pin} pair	
+			created: function(){
+				console.log('created LED');
+				$(this).css({'background-color':this.color});
+				var that = this;
+				socket.on('digitalWrite', function (data) {
+					console.log('caught digitla write');
+				    console.log(data);
+				    (that.value =  !that.value);
+
+				});
+			},
+			colorChanged: function(){
+				$(this).css({'background-color':this.color});
+			}, 
+			valueChanged: function(){
+				if (this.value == 0){
+					$(this).css({'background-color':'rgb(50,60,70)'});
+					$(this).css({'border-color':'black'});
+				} else {
+					$(this).css({'background-color':this.color});
+					$(this).css({'border-color':'rgb(200,0,0'});
+				}
+			}
+		});
+	</script>
+
+
+
+</polymer-element>
+
+
+
+// **************** BUTTON  
+// Input : Click
+// Functionality : 
+// 	Set value of LED
+<polymer-element name="x-button" on-click="{{buttonClick}}">
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border-radius: 50%;
+				border: 3px solid rgb(215,215,200);
+				background-color: rgb(195,195,180);
+			}
+		</style>
+
+	</template>
+
+	<script>
+		Polymer('x-button', {
+
+			id : 0, 
+			pin : 0,
+			connections :[ 
+				{id:0, pin:1}
+			],
+		
+			// When element is created, listens to proper entry in database based on
+			// {id, pin} pair	
+			created: function(){
+				console.log('created BUTTON');
+			},
+			buttonClick: function(){
+				console.log('Button ID:'+ this.id +' PIN:'+ this.pin +' was clicked');
+				var data = {
+					sender: {'pin':this.pin, 'id':this.id},
+					receiver : this.connections,
+					type: 'button click', 
+					value: '255'
+				}
+				socket.emit('input', { 'msg' : data });
+			}
+		});
+	</script>
+
+</polymer-element>
