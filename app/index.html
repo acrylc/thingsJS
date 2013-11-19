@@ -26,17 +26,13 @@
        
        <div id='container'>
            <x-led value='34'></x-led>
-           <x-button value='34'></x-button>
+<!--           <x-button value='34'></x-button> -->
        </div>
 
        <script src="scripts/socket.io.js"></script>
-<script>
-  var socket = io.connect('http://localhost:8080');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
+        <script>
+          var socket = io.connect('http://localhost:8080');
+        </script>
 
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>:        <![endif]-->
