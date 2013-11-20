@@ -25,6 +25,10 @@ byte server[] = { 162, 243, 38, 166};
 byte ip[]     = { 172, 16, 0, 100 };
 char message_buff[100];
 
+int digPins[20] = {};
+int digVals[20] = {};
+int numDigPins = 0;
+
 
 // Callback function header
 void callback(char* topic, byte* payload, unsigned int length);
@@ -58,7 +62,11 @@ parseMsgForCommand(msgString);
 
 void setup()
 {
-  
+  int i=0;
+  for(i=0;i<20;i++){
+    digVals[i]=0;
+    digPins[i]=0;
+  }
   Ethernet.begin(mac);
   if (client.connect("arduinoClient")) {
     client.publish("arduino","hello world");
@@ -69,6 +77,27 @@ void setup()
 void loop()
 {
   client.loop();
+  
+  // Do all digital writes
+  
+  // Do all analog writes
+ 
+  // Do all digital reads
+  // Only send message if value changes
+    int i = 0;
+  for (i=0;i<numDigPins;i++){
+      int val = digitalRead(digPins[i]);
+      if (val != digVals[i]){
+       digVals[i]=val; 
+       String msg = "";
+//       msg  = String("hello") + String("hi");
+     msg = String("{\"arduinoId\":0,\"pin\":")+digPins[i]+String(",\"value\":")+val+String("}");
+  client.publish("digitalRead", msg);
+      }
+  }
+
+  // Do all analog reads
+  
 }
 
 // Publish a string to the DEBUG channel
@@ -136,9 +165,17 @@ void doConfigurePin(String str){
    
    // Second char is the type of pin to be configure, 
    // where a = INPUT and b = OUTPUT
+   
+   // Initalize Digital Input
+   // Form a listener that runs through loop and constantly updates
+   // Value of virtual element
    if (content[1]=='a'){
 
      pinMode(pin, INPUT);
+          debug("Configuring pin "+String(pin)+" as a input");
+
+     digPins[numDigPins] = pin;
+     numDigPins++;
      
    } else if (content[1]=='b'){
 

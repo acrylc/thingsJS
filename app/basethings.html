@@ -89,7 +89,7 @@
 
 			value: 0, 
 			arduinoId : 0, 
-			pin: 4,
+			pin: 5,
 		
 			created: function(){
 				console.log('created Digital Input');
@@ -126,3 +126,56 @@
 
 </polymer-element>
 
+
+
+
+// Implementation of base digital input class
+// Examples : push button
+// At creation, is initalized as :
+// Listens to physical counterpart for changes to its value 
+<polymer-element name="analog-input" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('analog-input', {
+
+			value: 0, 
+			arduinoId : 0, 
+			pin: 4,
+		
+			created: function(){
+				console.log('created Analog Input');
+
+				var that = this;
+				// Listen to value changes on arduino
+				  socket.on('analogRead', function (data) {
+				  	console.log('Received a analog read');
+				    console.log(data);
+				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
+
+				    	console.log('updating Value');
+				    	that.value = data.value;
+				    }
+				  });
+			},
+
+			//For value change, 
+			valueChanged: function(){
+				console.log('value changed');
+			}
+		});
+
+	</script>
+
+</polymer-element>

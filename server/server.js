@@ -12,18 +12,24 @@ var io = socket.listen(8080);
 var mqtt = require('mqtt');
 var client = mqtt.createClient(1883, '162.243.38.166');
 client.subscribe('arduino');
+client.subscribe('digitalRead');
+
+
 
 
 io.sockets.on('connection', function (socket) {
     
+client.on('message', function (topic, message) {
+  console.log(message);
+  if (topic=='digitalRead'){
+    var data=JSON.parse(message);
+    socket.emit('digitalRead', data);
+  }
+});
 
     // ******************** ARDUINO to VIRTUAL ********************
     
     // On DIGITAL READ 
-    var msg = '{"value":1, "arduinoId":0, "pin":4}';
-    var data = JSON.parse(msg);
-    console.log(data);
-    socket.emit('digitalRead', data);
 
     // // readFromPin reads a sensor's value and re-routes it to virtual element
     // // type : digitalWrite   ->   digitalWrite(pin, value); 
