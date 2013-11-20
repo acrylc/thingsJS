@@ -9,7 +9,7 @@
 // 	Set value of LED
 
 </polymer-element>
-<polymer-element name="x-led" style="background-color: {{color}}"  extends="digital-output">
+<polymer-element name="x-led" style="background-color: rgb(50,60,70)"  extends="digital-output">
 	
 	<template >
 		
@@ -19,7 +19,7 @@
 				width: 40px ;
 				height: 40px;
 				border-radius: 50%;
-				border: 3px solid rgb(205,0,0);
+				border: 3px solid black;
 				transition: background-color 0.3s ease-in, border-color 0.3s ease-in;
 				-webkit-transition: background-color 0.3s ease-in, border-color 0.3s ease-in; 
 			}
@@ -36,7 +36,7 @@
 			created: function(){
 				this.super();
 				var that = this;
-				$(this).css({'background-color':this.color});
+				// $(this).css({'background-color':this.color});
 				socket.on('digitalWrite', function(){
 					that.value = !that.value;
 				})
@@ -68,6 +68,13 @@
 			},
 			turnOff: function(){
 				this.value = 0;
+			}, 
+			isOn: function(){
+				if (this.value>0){
+					return true;
+				} else {
+					return false;
+				}
 			}
 		});
 	</script>
@@ -78,11 +85,19 @@
 
 
 
-// **************** BUTTON  
-// Input : Click
+
+
+
+
+
+// **************** Digital LED  
+// Actuator : listens to virtual value and turns ON or OFF (or sets 255 value) physically 
+// Initalially value set to 0, OFF
 // Functionality : 
 // 	Set value of LED
-<polymer-element name="x-button" on-click="{{buttonClick}}">
+
+</polymer-element>
+<polymer-element name="x-button"  extends="digital-input">
 	
 	<template >
 		
@@ -91,50 +106,62 @@
 				display:inline-block;
 				width: 40px ;
 				height: 40px;
-				border: 3px solid rgb(225,225,210);
-				background-color: rgb(205,205,190);
-			}
-			:host:hover{
-				background-color: rgb(215,215,200);
-			}
-			:host:active{
-				background-color: rgb(190,190,175);
+				border: 3px solid rgb(195,195,210);
+				background-color: rgb(210,210,220);
+				transition: background-color 0.3s ease-in, border-color 0.3s ease-in;
+				-webkit-transition: background-color 0.3s ease-in, border-color 0.3s ease-in; 
 			}
 		</style>
-
 	</template>
 
 	<script>
 		Polymer('x-button', {
-
-			arduinoId : 0, 
-			pin : 0,
-			connections :[ 
-				{arduinoId:0, pin:1}
-			],
 		
 			// When element is created, listens to proper entry in database based on
 			// {arduinoId, pin} pair	
 			created: function(){
-				console.log('created BUTTON');
-				var data = {
-					pin: this.pin, 
-					arduinoId: this.arduinoId, 
-					type : 'input'
-				}
-				socket.emit('initPin', {msg:data});
+				this.super();
+				var that = this;
+				// $(this).css({'background-color':this.color});
+				// socket.on('digitalWrite', function(){
+				// 	that.value = !that.value;
+				// })
+
 			},
-			buttonClick: function(){
-				console.log('Button arduinoID:'+ this.arduinoId +' PIN:'+ this.pin +' was clicked');
-				var data = {
-					sender: {'pin':this.pin, 'arduinoId':this.arduinoId},
-					receiver : this.connections,
-					type: 'button click', 
-					value: '255'
+			// colorChanged: function(){
+			// 	$(this).css({'background-color':this.color});
+			// }, 
+
+			//For value change, update styling of element and send
+			//Digital Write msg to corresponding physical LED
+
+			valueChanged: function(){
+				// console.log('in value changed');
+				// var that = this;
+				// if (this.value == 0){
+				// 	$(this).css({'background-color':'rgb(50,60,70)'});
+				// 	$(this).css({'border-color':'black'});
+				// } else {
+				// 	$(this).css({'background-color':this.color});
+				// 	$(this).css({'border-color':'rgb(200,0,0'});
+				// }
+				// 				this.super();
+
+				this.super();
+				if (this.value == 0){
+					console.log('value is zerooo');
+					this.onClick();
 				}
-				socket.emit('input', { 'msg' : data });
+
+			},
+
+			onClick: function(){
+
 			}
 		});
 	</script>
 
+
+
 </polymer-element>
+
