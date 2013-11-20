@@ -13,41 +13,45 @@ var mqtt = require('mqtt');
 var client = mqtt.createClient(1883, '162.243.38.166');
 client.subscribe('arduino');
 
+
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  
-  socket.on('input', function (data) {
-  	// console.log('received other event data');
-   //  console.log(data);
-    socket.emit('digitalWrite', {msg:data});
-  });
+    
 
-  // readFromPin reads a sensor's value and re-routes it to virtual element
-  // type : digitalWrite   ->   digitalWrite(pin, value); 
-  socket.on('readFromPin', function(data){
-    console.log('test write to arduino');
+    // ******************** ARDUINO to VIRTUAL ********************
+    
+    // On DIGITAL READ 
+    var msg = '{"value":1, "arduinoId":0, "pin":4}';
+    var data = JSON.parse(msg);
     console.log(data);
-  });
+    socket.emit('digitalRead', data);
 
-  // writeToPin reads an actuator's value and rerouts it to physical element
-  // type : digitalWrite   ->   digitalWrite(pin, value); 
-  socket.on('writeToPin', function(data){
-  	console.log('test write to arduino');
-  	console.log(data);
-    client.publish('b', JSON.stringify(data) );
+    // // readFromPin reads a sensor's value and re-routes it to virtual element
+    // // type : digitalWrite   ->   digitalWrite(pin, value); 
+    // socket.on('readFromPinSV', function(data){
+    //     console.log('test write to arduino');
+    //     console.log(data);
+    //     socket.emit('vDigitalRead', {'value':1, 'arduinoId':0,'pin':4});
+    // });
 
-  });
+    // ******************** VIRTUAL to ARDUINO ********************
 
-  // InitPin rerouts message to arduino to call 
-  // pinMode(pin, value) 
-  // on corresponding arduino with given ID     
-  socket.on('initPin', function(data){
-    console.log('initalizing pin');
-    console.log(JSON.stringify(data));
-    // socket.emit('initPin', {msg:data});
-    client.publish('b', JSON.stringify(data) );
+    // InitPin rerouts message to arduino to call 
+    // pinMode(pin, value) 
+    // on corresponding arduino with given ID     
+    socket.on('initPin', function(data){
+        console.log('initalizing pin');
+        console.log(JSON.stringify(data));
+        // socket.emit('initPin', {msg:data});
+        client.publish('b', JSON.stringify(data) );
+    });
 
-  })
+    // writeToPin reads an actuator's value and rerouts it to physical element
+    // type : digitalWrite   ->   digitalWrite(pin, value); 
+    socket.on('writeToPin', function(data){
+        console.log('test write to arduino');
+        console.log(data);
+        client.publish('b', JSON.stringify(data) );
+    });
 
 });
 
