@@ -92,7 +92,10 @@ void loop()
        String msg = "";
 //       msg  = String("hello") + String("hi");
      msg = String("{\"arduinoId\":0,\"pin\":")+digPins[i]+String(",\"value\":")+val+String("}");
-  client.publish("digitalRead", msg);
+  unsigned int length = msg.length();
+  char charBuf[length+1];
+  msg.toCharArray(charBuf, length+1);
+  client.publish("digitalRead",charBuf);
       }
   }
 
@@ -106,6 +109,14 @@ void debug( String str ){
   char charBuf[length+1];
   str.toCharArray(charBuf, length+1);
   client.publish("debug",charBuf);
+}
+
+// Publish a string to the DEBUG channel
+void debug2( String str ){
+  unsigned int length = str.length();
+  char charBuf[length+1];
+  str.toCharArray(charBuf, length+1);
+  client.publish("digitalRead",charBuf);
 }
 
 void parseMsgForCommand( String str){
