@@ -25,10 +25,15 @@ byte server[] = { 162, 243, 38, 166};
 byte ip[]     = { 172, 16, 0, 100 };
 char message_buff[100];
 
+// Digital Pin Vars
 int digPins[20] = {};
 int digVals[20] = {};
 int numDigPins = 0;
 
+// Analog Pin Vars
+int anPins[20] = {};
+int anVals[20] = {};
+int numAnPins = 0;
 
 // Callback function header
 void callback(char* topic, byte* payload, unsigned int length);
@@ -90,7 +95,6 @@ void loop()
       if (val != digVals[i]){
        digVals[i]=val; 
        String msg = "";
-//       msg  = String("hello") + String("hi");
      msg = String("{\"arduinoId\":0,\"pin\":")+digPins[i]+String(",\"value\":")+val+String("}");
   unsigned int length = msg.length();
   char charBuf[length+1];
@@ -98,9 +102,25 @@ void loop()
   client.publish("digitalRead",charBuf);
       }
   }
-
-  // Do all analog reads
   
+  // Do all analog reads
+    // Do all digital reads
+  // Only send message if value changes
+     i = 0;
+  for (i=0;i<numAnPins;i++){
+      int val = analogRead(digPins[i]);
+      if (val != anVals[i]){
+       anVals[i]=val; 
+       String msg = "";
+     msg = String("{\"arduinoId\":0,\"pin\":")+anPins[i]+String(",\"value\":")+val+String("}");
+  unsigned int length = msg.length();
+  char charBuf[length+1];
+  msg.toCharArray(charBuf, length+1);
+  debug(msg);
+  client.publish("analogRead",charBuf);
+      }
+  }
+
 }
 
 // Publish a string to the DEBUG channel
@@ -180,14 +200,21 @@ void doConfigurePin(String str){
    // Initalize Digital Input
    // Form a listener that runs through loop and constantly updates
    // Value of virtual element
-   if (content[1]=='a'){
+   if (content[1]=='a' && content[2] =='d'){
 
      pinMode(pin, INPUT);
-          debug("Configuring pin "+String(pin)+" as a input");
+     debug("Configuring pin "+String(pin)+" as a input");
 
      digPins[numDigPins] = pin;
      numDigPins++;
      
+     
+   // Initialize Analog Input
+   } else  if (content[1]=='a' && content[2] =='a'){
+         anPins[numAnPins] = pin;
+         numAnPins++;
+ 
+   // Initialize Digital output 
    } else if (content[1]=='b'){
 
      pinMode(pin, OUTPUT);

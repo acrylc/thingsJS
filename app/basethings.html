@@ -27,12 +27,14 @@
 		
 			created: function(){
 				console.log('created Digital Output');
-				var type = 'b';
+				
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'b'; // Input/Output type, 'a' for input, 'b' for output
 				var p = String.fromCharCode(this.pin+97);
 
 				var data = {
 					msg : 'configurePin',
-					content : p+type
+					content : p+ioType+adType
 				}
 				socket.emit('initPin', data);
 			},
@@ -92,13 +94,15 @@
 			pin: 5,
 		
 			created: function(){
-				console.log('created Digital Input');
+				console.log('created Analog Input');
 				var type = 'a';
 				var p = String.fromCharCode(this.pin+97);
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'a'; // Input/Output type, 'a' for input, 'b' for output
 
 				var data = {
 					msg : 'configurePin',
-					content : p+type
+					content : p+ioType+adType
 				};
 
 				// Initalize pin on arduino
@@ -129,6 +133,8 @@
 
 
 
+
+
 // Implementation of base digital input class
 // Examples : push button
 // At creation, is initalized as :
@@ -152,15 +158,26 @@
 
 			value: 0, 
 			arduinoId : 0, 
-			pin: 4,
+			pin: 5,
 		
 			created: function(){
-				console.log('created Analog Input');
+				console.log('created Digital Input');
 
+				var p = String.fromCharCode(this.pin+97);
+				var adType = 'a'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'a'; // Input/Output type, 'a' for input, 'b' for output
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				};
+
+				// Initalize pin on arduino
+				socket.emit('initPin', data);
 				var that = this;
 				// Listen to value changes on arduino
 				  socket.on('analogRead', function (data) {
-				  	console.log('Received a analog read');
+				  	console.log('Received a analog read, FIXED');
 				    console.log(data);
 				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
 
@@ -179,3 +196,7 @@
 	</script>
 
 </polymer-element>
+
+
+
+

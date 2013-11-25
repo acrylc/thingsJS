@@ -13,6 +13,7 @@ var mqtt = require('mqtt');
 var client = mqtt.createClient(1883, '162.243.38.166');
 client.subscribe('arduino');
 client.subscribe('digitalRead');
+client.subscribe('analogRead');
 
 
 
@@ -20,11 +21,18 @@ client.subscribe('digitalRead');
 io.sockets.on('connection', function (socket) {
     
 client.on('message', function (topic, message) {
+    console.log(message);
   console.log(message);
   if (topic=='digitalRead'){
     var data=JSON.parse(message);
     socket.emit('digitalRead', data);
   }
+    if (topic=='analogRead'){
+        console.log('reading analog input');
+    var data=JSON.parse(message);
+    socket.emit('analogRead', data);
+  }
+
 });
 
     // ******************** ARDUINO to VIRTUAL ********************
