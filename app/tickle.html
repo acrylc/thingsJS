@@ -15,21 +15,25 @@
         <!-- endbuild -->
 
         
+        <script src="components/polymer/polymer.min.js"></script>
+        <script src="components/polymer/pointerevents.js"></script>
 
-<script type="text/javascript" src="scripts/paper.js"></script>
+        <script type="text/javascript" src="js/paper.js"></script>
 
-<!--         <link rel="import" href="basethings.html">
-        <link rel="import" href="things.html"> -->
+        <link rel="import" href="basethings.html">
+        <link rel="import" href="things.html">
 
     </head>
     <body>
        
        <div id='container'>
-            <canvas id="myCanvas" width='1000' height='1000'></canvas>
 
        </div>
 
-
+       <script src="scripts/socket.io.js"></script>
+        <script>
+          var socket = io.connect('http://localhost:8080');
+        </script>
 
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>:        <![endif]-->
@@ -51,6 +55,7 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
+        <script src="scripts/things.js"></script>
         <script src="tickle.js"></script>
         <!-- endbuild -->
 
