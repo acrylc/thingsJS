@@ -14,27 +14,33 @@
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
 
-        
+        <!-- 
         <script src="components/polymer/polymer.min.js"></script>
         <script src="components/polymer/pointerevents.js"></script>
 
         <link rel="import" href="basethings.html">
         <link rel="import" href="things.html">
-
+ -->
     </head>
     <body>
-       
+    
+
+    <script src="sdk.unminified.js"></script>
+
+        <canvas id="audio" height="400" width="512"></canvas>
+
+    <!--   
        <div id='container'>
            <x-led id='led'></x-led>
            <x-button id='di'></x-button>
            <analog-input id='temp_sensor'></analog-input>
-<!--           <x-button value='34'></x-button> -->
        </div>
 
        <script src="scripts/socket.io.js"></script>
         <script>
           var socket = io.connect('http://localhost:8080');
         </script>
+    -->
 
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>:        <![endif]-->
@@ -56,8 +62,11 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
+
         <script src="scripts/things.js"></script>
-        <script src="scripts/main.js"></script>
+        <script src="scripts/dancer.js"></script>
+
+        <script src="audio.js"></script>
         <!-- endbuild -->
 
         <!-- build:js(.tmp) scripts/coffee.js -->
