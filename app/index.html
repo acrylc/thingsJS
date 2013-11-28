@@ -23,18 +23,23 @@
 
     </head>
     <body>
-       
+    
+
+    <script src="http://connect.soundcloud.com/sdk.js"></script>
+
+
+    <!--   
        <div id='container'>
            <x-led id='led'></x-led>
            <x-button id='di'></x-button>
            <analog-input id='temp_sensor'></analog-input>
-<!--           <x-button value='34'></x-button> -->
        </div>
 
        <script src="scripts/socket.io.js"></script>
         <script>
           var socket = io.connect('http://localhost:8080');
         </script>
+    -->
 
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>:        <![endif]-->
@@ -57,7 +62,7 @@
 
         <!-- build:js scripts/main.js -->
         <script src="scripts/things.js"></script>
-        <script src="scripts/main.js"></script>
+        <script src="scripts/audio.js"></script>
         <!-- endbuild -->
 
         <!-- build:js(.tmp) scripts/coffee.js -->
