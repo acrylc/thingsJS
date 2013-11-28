@@ -1,0 +1,202 @@
+
+// Implementation of base digital output class
+// Examples : LED
+// At creation, is initalized as : 
+// Writes to its digital counterpart its value when changed
+  socket = io.connect('http://localhost:8080');
+<polymer-element name="digital-output" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('digital-output', {
+
+			value: 0, 
+			arduinoId : 0, 
+			pin: 4,
+		
+			created: function(){
+				//console.log('created Digital Output');
+				
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'b'; // Input/Output type, 'a' for input, 'b' for output
+				var p = String.fromCharCode(this.pin+97);
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				}
+				socket.emit('initPin', data);
+			},
+
+			//For value change, 
+			//Digital Write msg to corresponding physical acctuator
+			valueChanged: function(){
+				//console.log('Value for LED changed, value is now : '+this.value);
+				var that = this;
+				var p = String.fromCharCode(this.pin+97);
+
+				var data = {};
+				if (this.value == 0){
+					 data =  {
+						msg:'digitalWrite', 
+						content: p+'0'
+					};
+				} else {
+					data = {
+						msg:'digitalWrite', 
+						content: p+'1'
+					};
+				}
+				socket.emit('writeToPin', data);
+			}
+		});
+	</script>
+
+</polymer-element>
+
+
+
+
+// Implementation of base digital input class
+// Examples : push button
+// At creation, is initalized as :
+// Listens to physical counterpart for changes to its value 
+<polymer-element name="digital-input" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('digital-input', {
+
+			value: 0, 
+			arduinoId : 0, 
+			pin: 5,
+		
+			created: function(){
+				//console.log('created Analog Input');
+				var type = 'a';
+				var p = String.fromCharCode(this.pin+97);
+				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'a'; // Input/Output type, 'a' for input, 'b' for output
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				};
+
+				// Initalize pin on arduino
+				socket.emit('initPin', data);
+				var that = this;
+				// Listen to value changes on arduino
+				  socket.on('digitalRead', function (data) {
+				  	//console.log('Received a digital read, FIXED');
+				    //console.log(data);
+				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
+
+				    	//console.log('updating Value');
+				    	that.value = data.value;
+				    }
+				  });
+			},
+
+			//For value change, 
+			valueChanged: function(){
+				//console.log('value changed');
+			}
+		});
+
+	</script>
+
+</polymer-element>
+
+
+
+
+
+
+// Implementation of base digital input class
+// Examples : push button
+// At creation, is initalized as :
+// Listens to physical counterpart for changes to its value 
+<polymer-element name="analog-input" attributes="value arduinoId pin" >
+	
+	<template >
+		
+		<style>
+			:host {
+				display:inline-block;
+				width: 40px ;
+				height: 40px;
+				border: 3px solid rgb(205,205,210);
+			}
+		</style>
+	</template>
+
+	<script>
+		Polymer('analog-input', {
+
+			value: 0, 
+			arduinoId : 0, 
+			pin: 2,
+		
+			created: function(){
+				//console.log('created Digital Input');
+
+				var p = String.fromCharCode(this.pin+97);
+				var adType = 'a'; // Analog/Digital type, 'd' for digital, 'a' for analog
+				var ioType = 'a'; // Input/Output type, 'a' for input, 'b' for output
+
+				var data = {
+					msg : 'configurePin',
+					content : p+ioType+adType
+				};
+
+				// Initalize pin on arduino
+				socket.emit('initPin', data);
+				var that = this;
+				// Listen to value changes on arduino
+				  socket.on('analogRead', function (data) {
+				  	//console.log('Received a analog read, FIXED');
+				    //console.log(data);
+				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
+
+				    	//console.log('updating Value');
+				    	that.value = data.value;
+				    }
+				  });
+			},
+
+			//For value change, 
+			valueChanged: function(){
+				//console.log('value changed');
+			}
+		});
+
+	</script>
+
+</polymer-element>
+
+
+
+

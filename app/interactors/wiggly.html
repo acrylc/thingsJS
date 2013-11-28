@@ -1,0 +1,63 @@
+
+// **************** Wiggly virtual sensor
+
+// Input : 
+
+</polymer-element>
+<polymer-element name="vin-wiggly"  extends="ain-flex">
+	
+	<template >
+		
+		<style>
+		</style>
+	</template>
+
+	<script>
+		Polymer('vin-wiggly', {
+
+			consecWiggles : 0,
+			timeout : 10000,
+		
+			// When element is created, listens to flex value 	
+			created: function(){
+				this.super();
+				var that = this;
+
+
+				// For each flex bend, augments a counter
+				// WHen counter reachs 3, call onWiggle
+				// If without timeout durations
+				this.onBend = function(){
+					console.log('Calling the new bend!');
+					if (this.consecWiggles == 0){
+						this.initTime = Date.now();
+					}
+					this.consecWiggles +=1;
+
+					// If 3 bents were fired within timout duration
+					// call onWiggle
+					if (this.consecWiggles ==3){
+						endTime = Date.now();
+						timeDiff = endTime - this.initTime;
+						if (timeDiff < this.timeout){
+						this.onWiggle(); 
+						}
+						this.consecWiggles = 0;
+					}
+				}
+			},
+
+			// Resistance of voltage devider is hardcoded, mapping
+			// is according to empirical testing but can be modified
+			// Map 320-150 value to 0-90 degree angle
+			valueChanged: function(){
+				this.super();
+			},
+
+			// Exectued when flex bends by 80 around 80 degrees
+			onWiggle : function(){
+				console.log("WIGGLE WIGGLE WIGGLE");
+			}
+		});
+	</script>
+

@@ -1,0 +1,66 @@
+
+// **************** FLEX sensor
+
+// Input : listens to value of physical flex and converts value to angle, 
+// Assumes 10K resistor addes as voltage divider to simple Adafruit Flex Sensor
+
+</polymer-element>
+<polymer-element name="ain-flex"  extends="analog-input">
+	
+	<template >
+		
+		<style>
+		</style>
+	</template>
+
+	<script>
+		Polymer('ain-flex', {
+		
+			REST : 0,
+			BENT : 1,
+
+			angle:0,
+			state: 0,
+
+			// When element is created, listens to flex value 	
+			created: function(){
+				this.super();
+				var that = this;
+			},
+
+			// Resistance of voltage devider is hardcoded, mapping
+			// is according to empirical testing but can be modified
+			// Map 320-150 value to 0-90 degree angle
+			valueChanged: function(){
+				this.super();
+				var v = this.value;
+				this.angle = ((v-150)*90/170)*(-1)+90; // maps value to angle
+				console.log(this.angle);
+
+				// Set flex state to REST for angle <5
+				// and BENT for angle > 70
+				// Call onBend when transition from REST to BENT
+				if (this.angle <= 5){
+					this.state = this.REST;
+				}
+				if (this.angle >=75){
+
+					var oldstate = this.state;
+					this.state = this.BENT;
+
+					// TODO
+					// Add duration limit for transition from rest to bent
+					// ie add moving state
+					if (oldstate == this.REST){
+						this.onBend();
+					}
+				}
+			},
+
+			// Exectued when flex bends by 80 around 80 degrees
+			onBend : function(){
+				console.log("Flex was bent");
+			}
+		});
+	</script>
+

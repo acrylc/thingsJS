@@ -18,16 +18,16 @@
         <script src="components/polymer/polymer.min.js"></script>
         <script src="components/polymer/pointerevents.js"></script>
 
-        <link rel="import" href="basethings.html">
-        <link rel="import" href="things.html">
+        <link rel="import" href="interactors/basethings.html">
+        <link rel="import" href="interactors/things.html">
+        <link rel="import" href="interactors/flex.html">
+        <link rel="import" href="interactors/wiggly.html">
 
     </head>
     <body>
        
        <div id='container'>
-           <x-led id='led'></x-led>
-           <x-button id='di'></x-button>
-           <analog-input id='temp_sensor'></analog-input>
+           <vin-wiggly id='finger'></vin-wiggly>
 <!--           <x-button value='34'></x-button> -->
        </div>
 
