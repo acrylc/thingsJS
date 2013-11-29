@@ -29,11 +29,15 @@
        <div id='container'>
            <vin-wiggly id='finger'></vin-wiggly>
 <!--           <x-button value='34'></x-button> -->
+        <canvas id='myCanvas'></canvas>
        </div>
 
        <script src="scripts/socket.io.js"></script>
         <script>
           var socket = io.connect('http://localhost:8080');
+          $('#finger').onWiggle = function(){
+            height += 50;
+          }
         </script>
 
         <!--[if lt IE 7]>
@@ -56,6 +60,8 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
+        <script src="scripts/paper.js"></script>
+        <script src="scripts/tickle.js"></script>
         <script src="scripts/things.js"></script>
         <script src="scripts/main.js"></script>
         <!-- endbuild -->

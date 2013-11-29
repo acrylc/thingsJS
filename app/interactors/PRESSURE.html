@@ -1,5 +1,5 @@
 
-// **************** FLEX sensor
+// **************** PRESSURE sensor
 
 // Input : listens to value of physical flex and converts value to angle, 
 // Assumes 10K resistor addes as voltage divider to simple Adafruit Flex Sensor
@@ -35,7 +35,7 @@
 				this.super();
 				var v = this.value;
 				this.angle = ((v-150)*90/170)*(-1)+90; // maps value to angle
-				//console.log(this.angle);
+				console.log(this.angle);
 
 				// Set flex state to REST for angle <5
 				// and BENT for angle > 70

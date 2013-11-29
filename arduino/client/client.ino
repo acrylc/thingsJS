@@ -30,6 +30,7 @@ int digPins[20] = {};
 int digVals[20] = {};
 int numDigPins = 0;
 
+int anPinConst[5] = [A0,A1,A2,A3,A4,A5];
 // Analog Pin Vars
 int anPins[20] = {};
 int anVals[20] = {};
@@ -108,7 +109,7 @@ void loop()
   // Only send message if value changes
      i = 0;
   for (i=0;i<numAnPins;i++){
-      int val = analogRead(digPins[i]);
+      int val = analogRead(anPinConst[anPins[i]]);
       if (val != anVals[i]){
        anVals[i]=val; 
        String msg = "";

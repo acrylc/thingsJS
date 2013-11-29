@@ -26,7 +26,7 @@
 			pin: 4,
 		
 			created: function(){
-				console.log('created Digital Output');
+				//console.log('created Digital Output');
 				
 				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
 				var ioType = 'b'; // Input/Output type, 'a' for input, 'b' for output
@@ -42,7 +42,7 @@
 			//For value change, 
 			//Digital Write msg to corresponding physical acctuator
 			valueChanged: function(){
-				console.log('Value for LED changed, value is now : '+this.value);
+				//console.log('Value for LED changed, value is now : '+this.value);
 				var that = this;
 				var p = String.fromCharCode(this.pin+97);
 
@@ -94,7 +94,7 @@
 			pin: 5,
 		
 			created: function(){
-				console.log('created Analog Input');
+				//console.log('created Analog Input');
 				var type = 'a';
 				var p = String.fromCharCode(this.pin+97);
 				var adType = 'd'; // Analog/Digital type, 'd' for digital, 'a' for analog
@@ -110,11 +110,11 @@
 				var that = this;
 				// Listen to value changes on arduino
 				  socket.on('digitalRead', function (data) {
-				  	console.log('Received a digital read, FIXED');
-				    console.log(data);
+				  	//console.log('Received a digital read, FIXED');
+				    //console.log(data);
 				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
 
-				    	console.log('updating Value');
+				    	//console.log('updating Value');
 				    	that.value = data.value;
 				    }
 				  });
@@ -122,7 +122,7 @@
 
 			//For value change, 
 			valueChanged: function(){
-				console.log('value changed');
+				//console.log('value changed');
 			}
 		});
 
@@ -158,10 +158,10 @@
 
 			value: 0, 
 			arduinoId : 0, 
-			pin: 5,
+			pin: 2,
 		
 			created: function(){
-				console.log('created Digital Input');
+				//console.log('created Digital Input');
 
 				var p = String.fromCharCode(this.pin+97);
 				var adType = 'a'; // Analog/Digital type, 'd' for digital, 'a' for analog
@@ -177,11 +177,11 @@
 				var that = this;
 				// Listen to value changes on arduino
 				  socket.on('analogRead', function (data) {
-				  	console.log('Received a analog read, FIXED');
-				    console.log(data);
+				  	//console.log('Received a analog read, FIXED');
+				    //console.log(data);
 				    if (data.arduinoId == that.arduinoId && data.pin == that.pin){
 
-				    	console.log('updating Value');
+				    	//console.log('updating Value');
 				    	that.value = data.value;
 				    }
 				  });
@@ -189,7 +189,7 @@
 
 			//For value change, 
 			valueChanged: function(){
-				console.log('value changed');
+				//console.log('value changed');
 			}
 		});
 
