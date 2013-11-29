@@ -1,0 +1,41 @@
+
+
+// **************** HUG interactor
+
+// Input : Assumes triggering a pressure sensor for a certain duration ammounts to a hug
+
+</polymer-element>
+<polymer-element name="vin-huggable"  extends="ain-pressure">
+	
+	<template >
+		
+		<style>
+		</style>
+	</template>
+
+	<script>
+		Polymer('vin-huggable', {
+		
+			minHugDuration : 1000,
+
+			// When element is created, listens to flex value 	
+			created: function(){
+				this.super();
+			
+				this.onPress = function(){
+					this.hugStart = Date.now();
+				}
+				this.onRelease = function(){
+					var hugEnd = Date.now();
+					if ( (hugEnd-this.hugStart) >= this.minHugDuration ){
+						this.onHug();
+					}
+				}
+			},
+			onHug: function(){
+				console.log('On Hug!!!');
+
+			}
+		});
+	</script>
+

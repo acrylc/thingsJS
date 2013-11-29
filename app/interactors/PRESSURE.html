@@ -1,11 +1,12 @@
 
+
 // **************** PRESSURE sensor
 
 // Input : listens to value of physical flex and converts value to angle, 
 // Assumes 10K resistor addes as voltage divider to simple Adafruit Flex Sensor
 
 </polymer-element>
-<polymer-element name="ain-flex"  extends="analog-input">
+<polymer-element name="ain-pressure"  extends="analog-input">
 	
 	<template >
 		
@@ -14,13 +15,14 @@
 	</template>
 
 	<script>
-		Polymer('ain-flex', {
+		Polymer('ain-pressure', {
 		
-			REST : 0,
-			BENT : 1,
+			// pressure is normalized to a value 0-1
+			pressure:0,
 
-			angle:0,
-			state: 0,
+			// boolean isPressed represents if the pressure sensor is pressed
+			// assume pressure <0.05 is noise, ie not pressed
+			isPressed:false,
 
 			// When element is created, listens to flex value 	
 			created: function(){
@@ -28,38 +30,34 @@
 				var that = this;
 			},
 
-			// Resistance of voltage devider is hardcoded, mapping
-			// is according to empirical testing but can be modified
-			// Map 320-150 value to 0-90 degree angle
+			// Map pressure value from range 0-1023 to 0-1
 			valueChanged: function(){
 				this.super();
-				var v = this.value;
-				this.angle = ((v-150)*90/170)*(-1)+90; // maps value to angle
-				console.log(this.angle);
-
-				// Set flex state to REST for angle <5
-				// and BENT for angle > 70
-				// Call onBend when transition from REST to BENT
-				if (this.angle <= 5){
-					this.state = this.REST;
+				this.pressure  = this.value/1023; // maps value to angle
+				console.log(this.pressure);
+				if (this.pressure > 0.05){
+					this.isPressed = true;
 				}
-				if (this.angle >=75){
-
-					var oldstate = this.state;
-					this.state = this.BENT;
-
-					// TODO
-					// Add duration limit for transition from rest to bent
-					// ie add moving state
-					if (oldstate == this.REST){
-						this.onBend();
-					}
+				if (this.pressure < 0.05){
+					this.isPressed = false;
 				}
 			},
 
-			// Exectued when flex bends by 80 around 80 degrees
-			onBend : function(){
-				console.log("Flex was bent");
+			isPressedChanged: function(){
+				console.log('is pressed changed!');
+				if(this.isPressed == true)
+					this.onPress();
+				else
+					this.onRelease();
+			},
+
+			onPress: function(){
+				console.log('On press!');
+
+			},
+			onRelease: function(){
+				console.log('On release!');
+
 			}
 		});
 	</script>

@@ -3,10 +3,6 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
 
 @import 'sass-bootstrap/lib/bootstrap';
 
-.hero-unit {
-    margin: 50px auto 0 auto;
-    width: 300px;
-}
 
 .browsehappy {
     margin: 0.2em 0;
@@ -15,8 +11,28 @@ $iconWhiteSpritePath: "../images/glyphicons-halflings-white.png";
     padding: 0.2em 0;
 }
 
+body, html{
+	width:100%;
+	position:relative;
+}
 
 #container {
 	padding: 100px;	
 	text-align:center;
+	background-color: rgb(250,253,255);
+	width:100%;
+}
+
+#images_grid{
+	text-align:center;
+	width:100%;
+}
+
+img{
+	width:500;
+	height:500;
+	border: 10px solid black;
+	display:block;
+	margin: 50px;
+	position:relative;
 }

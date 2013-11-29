@@ -21,22 +21,25 @@
         <link rel="import" href="interactors/basethings.html">
         <link rel="import" href="interactors/things.html">
         <link rel="import" href="interactors/flex.html">
-        <link rel="import" href="interactors/wiggly.html">
+        <link rel="import" href="interactors/pressure.html">
+        <link rel="import" href="interactors/huggable.html">
 
     </head>
     <body>
        
        <div id='container'>
-           <vin-wiggly id='finger'></vin-wiggly>
-<!--           <x-button value='34'></x-button> -->
-        <canvas id='myCanvas'></canvas>
-       </div>
+           <vin-huggable ></vin-huggable>
+        
+            <div id='images_grid'>
+
+            </div>
+        </div>
 
        <script src="scripts/socket.io.js"></script>
         <script>
           var socket = io.connect('http://localhost:8080');
-          $('#finger').onWiggle = function(){
-            height += 50;
+          for (var i = 0;i<10;i++){
+            $('#images_grid').append('<img  src="http://placekitten.com/g/500/'+(500+50*i)+'">')
           }
         </script>
 
@@ -60,10 +63,9 @@
         <!-- endbuild -->
 
         <!-- build:js scripts/main.js -->
-        <script src="scripts/paper.js"></script>
-        <script src="scripts/tickle.js"></script>
         <script src="scripts/things.js"></script>
         <script src="scripts/main.js"></script>
+        <script src="scripts/hug.js"></script>
         <!-- endbuild -->
 
         <!-- build:js(.tmp) scripts/coffee.js -->
