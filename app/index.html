@@ -23,13 +23,15 @@
         <link rel="import" href="interactors/flex.html">
         <link rel="import" href="interactors/pressure.html">
         <link rel="import" href="interactors/huggable.html">
+        <link rel="import" href="interactors/potentiometer.html">
 
     </head>
     <body>
        
        <div id='container'>
-           <vin-huggable ></vin-huggable>
-        
+
+            <x-button id='play'></x-button> 
+            <ain-pot id='volume'></ain-pot>        
             <div id='images_grid'>
 
             </div>
@@ -38,9 +40,7 @@
        <script src="scripts/socket.io.js"></script>
         <script>
           var socket = io.connect('http://localhost:8080');
-          for (var i = 0;i<10;i++){
-            $('#images_grid').append('<img  src="http://placekitten.com/g/500/'+(500+50*i)+'">')
-          }
+
         </script>
 
         <!--[if lt IE 7]>
@@ -62,10 +62,21 @@
         <!-- endbower -->
         <!-- endbuild -->
 
+        <script src="scripts/dancerjs/dancer.js"></script>
+        <script src="scripts/dancerjs/support.js"></script>
+        <script src="scripts/dancerjs/kick.js"></script>
+        <script src="scripts/dancerjs/adapterWebkit.js"></script>
+        <script src="scripts/dancerjs/adapterMoz.js"></script>
+        <script src="scripts/dancerjs/adapterFlash.js"></script>
+        <script src="scripts/dancerjs/lib/fft.js"></script>
+        <script src="scripts/dancerjs/lib/flash_detect.js"></script>
+        <script src="scripts/dancerjs/plugins/dancer.fft.js"></script>
+
+
         <!-- build:js scripts/main.js -->
         <script src="scripts/things.js"></script>
         <script src="scripts/main.js"></script>
-        <script src="scripts/hug.js"></script>
+        <script src="scripts/tuner.js"></script>
         <!-- endbuild -->
 
         <!-- build:js(.tmp) scripts/coffee.js -->

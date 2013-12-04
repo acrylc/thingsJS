@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <title>mySynth</title>
+    <script src='scripts/jquery.js'></script>
+    <script src='scripts/d3.js'></script>
+
+ 
+    <script src="../components/polymer/polymer.min.js"></script>
+    <script src="../components/polymer/pointerevents.js"></script>
+
+    <link rel="import" href="../interactors/basethings.html">
+    <link rel="import" href="../interactors/things.html">
+    <link rel="import" href="../interactors/flex.html">
+    <link rel="import" href="../interactors/pressure.html">
+    <link rel="import" href="../interactors/huggable.html">
+    <link rel="import" href="../interactors/potentiometer.html">
+
+    <script src='scripts/audio.js'></script>
+    <style>
+
+        @import url(http://fonts.googleapis.com/css?family=Lato:300,400);
+
+        body{
+            background: rgb(40,40,45);
+        }
+        input { display: block; }
+        canvas {
+            width:300;
+            height: 300;
+        }
+        #labels{
+            position: absolute;
+            left:50px;
+            bottom:50px;
+            font-family: 'Lato';
+            font-weight:700;
+            font-size: 1.2em;
+            color: black;
+        }
+        .label{
+            margin: 10px 0 10px 0;
+            width:50px;
+        }
+        #type{
+            width:50px;
+        }
+        #slider{
+            display:inline-block;
+            background: red;
+            height:3px;
+            font-weight: 300;
+            color: rgb(200,200,200);
+            font-size:0.8em;
+            display: inline-block;
+        }
+        #spectrum{
+            width:700px;
+            height:600px;
+            margin:0 auto;
+            border: 1px solid red;
+        }
+        #freq{
+            background: white;
+            width:3px;
+            margin: 2px;
+            display:inline-block;
+            bottom:0px;
+            float:bottom;
+
+        }
+    </style>
+</head>
+<body onload="init()">
+
+
+    <input id="play" onclick="toggleSound(this)" type="button" value="Play random sound" />
+ 
+    <span>Highpass:</span>
+    <input id="highpass" onchange="sliderChange(this)" type="range" min="0" max="1024" step="1" value="512" />
+    <span>Pan:</span>
+    <input id="pan" onchange="sliderChange(this)" type="range" min="-3" max="3" step="0.01" value="0" />
+    <span>Volume:</span>
+    <input id="volume" onchange="sliderChange(this)" type="range" min="0" max="1" step="0.01" value="1" />
+ 
+    <canvas ></canvas>
+
+    <div id='labels'>
+        <div class='label' id='highpassval'>
+            <div id='type'>HIGHPASS</div>
+            <div id='slider'></div>
+        </div>
+        <div class='label' id='panval'>
+            <div id='type'>PAN</div>
+            <div id='slider'></div>
+        </div>
+        <div class='label' id='volumeval'>
+                    <div id='type'>VOLUME</div>
+                <div id='slider'></div>
+        </div>
+
+    </div>
+
+          <div id='spectrum'>
+        </div>
+
+</body>
+</html>

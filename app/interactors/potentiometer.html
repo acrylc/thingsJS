@@ -1,0 +1,41 @@
+
+
+// **************** PRESSURE sensor
+
+// Input : listens to value of physical flex and converts value to angle, 
+// Assumes 10K resistor addes as voltage divider to simple Adafruit Flex Sensor
+
+</polymer-element>
+<polymer-element name="ain-pot"  extends="analog-input">
+	
+	<template >
+		
+		<style>
+		</style>
+	</template>
+
+	<script>
+		Polymer('ain-pot', {
+		
+			angle :0,
+
+			// When element is created, listens to flex value 	
+			created: function(){
+				this.super();
+				var that = this;
+			},
+
+			// Map pressure value from range 0-1023 to 0-1
+			valueChanged: function(){
+				this.super();
+				this.angle = this.value/1023;
+				this.onTurn();
+			},
+			onTurn: function(){
+				
+			}
+
+
+		});
+	</script>
+
